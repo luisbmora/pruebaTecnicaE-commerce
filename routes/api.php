@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\DataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::get('/direcciones', [DireccionController::class, 'index']);
+    Route::post('/direcciones', [DireccionController::class, 'store']);
+    Route::get('/direcciones/{id}', [DireccionController::class, 'show']);
+    Route::put('/direcciones/{id}', [DireccionController::class, 'update']);
+    Route::delete('/direcciones/{id}', [DireccionController::class, 'destroy']);
 });
