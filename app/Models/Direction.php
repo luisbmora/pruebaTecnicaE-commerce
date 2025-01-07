@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Direccion extends Model
+class Direction extends Model
 {
     use HasFactory;
-
+    protected $table = 'direcciones';
     protected $fillable = ['nombre', 'apellido', 'domicilio', 'correo_electronico'];
 }
+
+
