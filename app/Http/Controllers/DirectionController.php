@@ -9,26 +9,31 @@ class DirectionController extends Controller
 {
     public function index()
     {
-        $direcciones = Direccion::all();
+        $direcciones = Direction::get();
         return response()->json($direcciones, 200);
     }
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'nombre' => 'required|max:50',
-            'apellido' => 'required|max:50',
-            'domicilio' => 'required|max:255',
-            'correo_electronico' => 'required|email|unique:direcciones',
-        ]);
+        try {
+            $direccion = Direction::create($request->all()); // Utiliza todos los datos enviados
+            return response()->json([
+                'message' => 'Dirección creada exitosamente',
+                'direccion' => $direccion,
+            ], 201);
+        } catch (Exception $e) {
+            \Log::error('Error al crear dirección: ' . $e->getMessage());
 
-        $direccion = Direccion::create($data);
-        return response()->json(['message' => 'Dirección creada', 'direccion' => $direccion], 201);
+            return response()->json([
+                'message' => 'Ocurrió un error al crear la dirección',
+            ], 500);
+        }
+    
     }
 
     public function show($id)
     {
-        $direccion = Direccion::find($id);
+        $direccion = Direction::find($id);
 
         if (!$direccion) {
             return response()->json(['message' => 'Dirección no encontrada'], 404);
@@ -39,7 +44,7 @@ class DirectionController extends Controller
 
     public function update(Request $request, $id)
     {
-        $direccion = Direccion::find($id);
+        $direccion = Direction::find($id);
 
         if (!$direccion) {
             return response()->json(['message' => 'Dirección no encontrada'], 404);
@@ -58,7 +63,7 @@ class DirectionController extends Controller
 
     public function destroy($id)
     {
-        $direccion = Direccion::find($id);
+        $direccion = Direction::find($id);
 
         if (!$direccion) {
             return response()->json(['message' => 'Dirección no encontrada'], 404);
